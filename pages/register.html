@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 城市文化产业宣传与促进平台</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+        </div>
+    </nav>
+
+    <!-- 注册表单 -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4><i class="bi bi-person-plus me-2"></i>用户注册</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="registerForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="username" class="form-label">用户名</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" id="username" placeholder="请输入用户名" required>
+                                    </div>
+                                    <div class="form-text">3-16个字符，可包含字母、数字、下划线</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">手机号</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                        <input type="tel" class="form-control" id="phone" placeholder="请输入手机号" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label">密码</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                        <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+                                    </div>
+                                    <div class="form-text">6-20个字符，至少包含字母和数字</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="confirmPwd" class="form-label">确认密码</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                        <input type="password" class="form-control" id="confirmPwd" placeholder="请再次输入密码" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">邮箱 (选填)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    我已阅读并同意<a href="#" class="text-primary">《用户服务协议》</a>和<a href="#" class="text-primary">《隐私政策》</a>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">注册账号</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="login.html" class="text-decoration-none">已有账号？立即登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 注册逻辑JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                // 获取表单数据
+                const username = document.getElementById('username').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const confirmPwd = document.getElementById('confirmPwd').value.trim();
+                const email = document.getElementById('email').value.trim();
+
+                // 表单验证
+                const phoneReg = /^1[3-9]\d{9}$/;
+                const usernameReg = /^[a-zA-Z0-9_]{3,16}$/;
+                const pwdReg = /^(?=.*[a-zA-Z])(?=.*\d).{6,20}$/;
+
+                // 验证用户名
+                if (!usernameReg.test(username)) {
+                    alert('用户名格式错误！需3-16个字符，可包含字母、数字、下划线');
+                    return;
+                }
+
+                // 验证手机号
+                if (!phoneReg.test(phone)) {
+                    alert('请输入有效的手机号！');
+                    return;
+                }
+
+                // 验证密码
+                if (!pwdReg.test(password)) {
+                    alert('密码格式错误！需6-20个字符，至少包含字母和数字');
+                    return;
+                }
+
+                // 验证确认密码
+                if (password !== confirmPwd) {
+                    alert('两次输入的密码不一致！');
+                    return;
+                }
+
+                // 调用后端注册接口
+                try {
+                    const res = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, phone, password, email })
+                    });
+                    const j = await res.json();
+                    if (res.ok && j.code === 0) {
+                        alert('注册成功，请登录');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('注册失败：' + (j.msg || '未知错误'));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('注册失败，请稍后重试');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

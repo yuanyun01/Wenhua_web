@@ -1,0 +1,42 @@
+/* 全局样式 */
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 主内容区占满剩余高度 */
+main {
+    flex: 1;
+}
+
+/* 卡片悬停效果 */
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+/* 表单样式优化 */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* 轮播图文字背景 */
+.carousel-caption {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+/* 移动端适配调整 */
+@media (max-width: 768px) {
+    .carousel-caption {
+        display: none !important;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
