@@ -5,13 +5,6 @@
 - 功能：静态页面托管（`pages/`）、提供 REST 接口（示例 `/api/events`）。
 - 当前接口示例：`GET /api/events` 返回格式 `{ code: 0, data: [...] }`，前端通过 `fetch('/api/events')` 获取并渲染。
 
-## 二、如何把本文件复制到 Word
-- 直接打开：在 VS Code 或记事本中打开 `report.md`，全选复制，粘贴到 Word。样式为纯文本。
-- 保留 Markdown 格式到 Word：可使用 Pandoc 将 `report.md` 转为 `report.docx`：
-```
-pandoc report.md -o report.docx
-```
-（需要先安装 Pandoc：https://pandoc.org/）
 
 ## 三、为什么需要数据库？用数据库可以做什么
 - 持久化：把评论、用户、文章等数据保存到磁盘，重启服务器后数据依然存在（区别于内存临时存储）。

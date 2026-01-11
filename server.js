@@ -15,6 +15,10 @@ const port = 3000;
 
 // 5. 静态文件托管（pages 目录）
 app.use(express.static(path.join(__dirname, 'pages')));
+// 新增：托管js文件夹，访问 /js/xxx.js 对应根目录的js/xxx.js
+app.use('/js', express.static(path.join(__dirname, 'js')));
+// 新增：托管css文件夹，访问 /css/xxx.css 对应根目录的css/xxx.css
+app.use('/css', express.static(path.join(__dirname, 'css')));
 
 // 6. 确保 data 目录存在并初始化 SQLite 数据库（用于评论存储）
 if (!fs.existsSync(path.join(__dirname, 'data'))) {
