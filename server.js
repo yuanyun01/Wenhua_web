@@ -107,12 +107,12 @@ app.get('/', (req, res) => {
 // 5. 定义核心接口 /api/events（贴合你的项目需求）
 app.get('/api/events', (req, res) => {
   // 模拟城市文化活动数据，后续可替换为数据库查询结果
+  // 注意：前端期望的字段为 { id, title, date, place, description, image }
   const cultureEvents = [
-    { id: 1, title: '传统茶艺体验课', time: '2024-06-15', address: '城市文化中心1楼', desc: '零基础学习传统茶艺冲泡技巧' },
-    { id: 2, title: '城市文化故事分享会', time: '2024-06-22', address: '城市图书馆3楼', desc: '邀请市民分享身边的城市文化记忆' },
-    { id: 3, title: '民俗手工制作工坊', time: '2024-06-29', address: '青少年活动中心', desc: '亲手制作传统民俗手工艺品，感受文化魅力' }
+    { id: 1, title: '传统茶艺体验课', date: '2024-06-15', place: '城市文化中心1楼', description: '零基础学习传统茶艺冲泡技巧', image: 'https://picsum.photos/400/250?random=21' },
+    { id: 2, title: '城市文化故事分享会', date: '2024-06-22', place: '城市图书馆3楼', description: '邀请市民分享身边的城市文化记忆', image: 'https://picsum.photos/400/250?random=22' },
+    { id: 3, title: '民俗手工制作工坊', date: '2024-06-29', place: '青少年活动中心', description: '亲手制作传统民俗手工艺品，感受文化魅力', image: 'https://picsum.photos/400/250?random=23' }
   ];
-  
   // 控制台打印返回数据，方便查看接口调用情况
   console.log('返回/api/events接口数据：', cultureEvents);
   

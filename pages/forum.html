@@ -9,7 +9,6 @@
     <!-- 图标库 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- 自定义样式 -->
-    <link rel="stylesheet" href="css/style.css">
     <style>
         .forum-card {
             transition: all 0.3s ease;
@@ -27,6 +26,14 @@
             border-bottom: none;
             padding-bottom: 0;
             margin-bottom: 0;
+        }
+        .liked {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        .reply-input {
+            margin-top: 0.5rem;
+            display: none;
         }
     </style>
 </head>
@@ -49,8 +56,8 @@
                     <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
                 </ul>
                 <div class="d-flex" id="userNav">
-                    <a href="login.html" class="btn btn-outline-light me-2">登录</a>
-                    <a href="register.html" class="btn btn-primary">注册</a>
+                    <a href="login.html" class="btn btn-outline-light me-2" id="loginBtn">登录</a>
+                    <a href="register.html" class="btn btn-primary" id="registerBtn">注册</a>
                 </div>
             </div>
         </div>
@@ -88,18 +95,18 @@
     <!-- 论坛分类 -->
     <section class="py-4">
         <div class="container">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="forumTabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#all" data-bs-toggle="tab">全部话题</a>
+                    <a class="nav-link active" href="#all" data-bs-toggle="tab" id="tab-all">全部话题</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#experience" data-bs-toggle="tab">体验分享</a>
+                    <a class="nav-link" href="#experience" data-bs-toggle="tab" id="tab-experience">体验分享</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#discussion" data-bs-toggle="tab">文化探讨</a>
+                    <a class="nav-link" href="#discussion" data-bs-toggle="tab" id="tab-discussion">文化探讨</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#suggestion" data-bs-toggle="tab">建议反馈</a>
+                    <a class="nav-link" href="#suggestion" data-bs-toggle="tab" id="tab-suggestion">建议反馈</a>
                 </li>
             </ul>
         </div>
@@ -128,13 +135,13 @@
                                     <h5 class="card-title">非遗剪纸体验课真的太赞了！</h5>
                                     <p class="card-text">上周参加了市文化馆的剪纸体验课，非遗传承人王老师教得非常耐心，虽然是第一次尝试，但也做出了满意的作品。强烈推荐大家去体验一下，感受传统工艺的魅力！</p>
                                     <div class="d-flex gap-3 mt-3">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTopicDetail(1)">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTopicDetail(1)" id="commentBtn-1">
                                             <i class="bi bi-chat-dots me-1"></i>评论 (15)
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="likeTopic(1)" id="likeBtn-topic-1">
                                             <i class="bi bi-heart me-1"></i>点赞 (89)
                                         </button>
-                                        <button class="btn btn-sm btn-outline-success">
+                                        <button class="btn btn-sm btn-outline-success" id="shareBtn-1">
                                             <i class="bi bi-share me-1"></i>分享
                                         </button>
                                     </div>
@@ -144,7 +151,7 @@
                                         <h6 class="border-bottom pb-2">评论区</h6>
                                         
                                         <!-- 评论1 -->
-                                        <div class="comment-item">
+                                        <div class="comment-item" id="comment-1-1">
                                             <div class="d-flex align-items-start">
                                                 <img src="https://picsum.photos/50/50?random=31" class="rounded-circle me-3" width="30" height="30" alt="用户头像">
                                                 <div class="w-100">
@@ -153,18 +160,27 @@
                                                         <small class="text-muted">2026-02-08 11:10</small>
                                                     </div>
                                                     <p class="mb-2">我也去了，确实很棒！王老师的手艺太厉害了</p>
-                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="likeComment(1,1)" id="likeBtn-comment-1-1">
                                                         <i class="bi bi-heart me-1"></i>点赞 (12)
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="1" data-user="游客2026">
+                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="1" data-user="游客2026" data-comment-id="1" id="replyBtn-1-1">
                                                         <i class="bi bi-reply me-1"></i>回复
                                                     </button>
+                                                    <!-- 回复输入框 -->
+                                                    <div class="reply-input" id="replyInput-1-1">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control form-control-sm" placeholder="回复 游客2026...">
+                                                            <button class="btn btn-sm btn-primary" onclick="postReply(1,1)">
+                                                                <i class="bi bi-send me-1"></i>发送
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <!-- 评论2 -->
-                                        <div class="comment-item">
+                                        <div class="comment-item" id="comment-1-2">
                                             <div class="d-flex align-items-start">
                                                 <img src="https://picsum.photos/50/50?random=32" class="rounded-circle me-3" width="30" height="30" alt="用户头像">
                                                 <div class="w-100">
@@ -173,12 +189,21 @@
                                                         <small class="text-muted">2026-02-08 14:20</small>
                                                     </div>
                                                     <p class="mb-2">请问下次体验课是什么时候？想带孩子一起去</p>
-                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="likeComment(1,2)" id="likeBtn-comment-1-2">
                                                         <i class="bi bi-heart me-1"></i>点赞 (8)
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="1" data-user="传统文化迷">
+                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="1" data-user="传统文化迷" data-comment-id="2" id="replyBtn-1-2">
                                                         <i class="bi bi-reply me-1"></i>回复
                                                     </button>
+                                                    <!-- 回复输入框 -->
+                                                    <div class="reply-input" id="replyInput-1-2">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control form-control-sm" placeholder="回复 传统文化迷...">
+                                                            <button class="btn btn-sm btn-primary" onclick="postReply(1,2)">
+                                                                <i class="bi bi-send me-1"></i>发送
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,7 +212,7 @@
                                         <div class="mt-3">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="commentInput-1" placeholder="发表你的评论...">
-                                                <button class="btn btn-primary" onclick="postComment(1)">
+                                                <button class="btn btn-primary" onclick="postComment(1)" id="postCommentBtn-1">
                                                     <i class="bi bi-send me-1"></i>发布
                                                 </button>
                                             </div>
@@ -214,13 +239,13 @@
                                     <h5 class="card-title">如何更好地传承和发展城市传统文化？</h5>
                                     <p class="card-text">随着城市化进程的加快，许多传统民俗文化面临失传的风险。大家认为应该如何平衡现代化发展和传统文化保护？欢迎各抒己见，为城市文化发展建言献策。</p>
                                     <div class="d-flex gap-3 mt-3">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTopicDetail(2)">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTopicDetail(2)" id="commentBtn-2">
                                             <i class="bi bi-chat-dots me-1"></i>评论 (32)
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="likeTopic(2)" id="likeBtn-topic-2">
                                             <i class="bi bi-heart me-1"></i>点赞 (156)
                                         </button>
-                                        <button class="btn btn-sm btn-outline-success">
+                                        <button class="btn btn-sm btn-outline-success" id="shareBtn-2">
                                             <i class="bi bi-share me-1"></i>分享
                                         </button>
                                     </div>
@@ -230,7 +255,7 @@
                                         <h6 class="border-bottom pb-2">评论区</h6>
                                         
                                         <!-- 评论1 -->
-                                        <div class="comment-item">
+                                        <div class="comment-item" id="comment-2-1">
                                             <div class="d-flex align-items-start">
                                                 <img src="https://picsum.photos/50/50?random=34" class="rounded-circle me-3" width="30" height="30" alt="用户头像">
                                                 <div class="w-100">
@@ -239,12 +264,21 @@
                                                         <small class="text-muted">2026-02-07 16:15</small>
                                                     </div>
                                                     <p class="mb-2">我认为应该在老城区建立更多的文化展示区，保留原有建筑风格，同时引入新业态，让年轻人也愿意来</p>
-                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="likeComment(2,1)" id="likeBtn-comment-2-1">
                                                         <i class="bi bi-heart me-1"></i>点赞 (28)
                                                     </button>
-                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="2" data-user="老城区居民">
+                                                    <button class="btn btn-sm btn-outline-primary ms-2 reply-btn" data-topic="2" data-user="老城区居民" data-comment-id="1" id="replyBtn-2-1">
                                                         <i class="bi bi-reply me-1"></i>回复
                                                     </button>
+                                                    <!-- 回复输入框 -->
+                                                    <div class="reply-input" id="replyInput-2-1">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control form-control-sm" placeholder="回复 老城区居民...">
+                                                            <button class="btn btn-sm btn-primary" onclick="postReply(2,1)">
+                                                                <i class="bi bi-send me-1"></i>发送
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -253,7 +287,7 @@
                                         <div class="mt-3">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="commentInput-2" placeholder="发表你的评论...">
-                                                <button class="btn btn-primary" onclick="postComment(2)">
+                                                <button class="btn btn-primary" onclick="postComment(2)" id="postCommentBtn-2">
                                                     <i class="bi bi-send me-1"></i>发布
                                                 </button>
                                             </div>
@@ -266,14 +300,14 @@
                     
                     <!-- 分页 -->
                     <nav class="mt-5">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <li class="page-item disabled" id="prevPageBtn">
                                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
                             </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
+                            <li class="page-item active" id="pageBtn-1"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item" id="pageBtn-2"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item" id="pageBtn-3"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" id="nextPageBtn">
                                 <a class="page-link" href="#">下一页</a>
                             </li>
                         </ul>
@@ -284,7 +318,7 @@
                     <div class="text-center py-5">
                         <h4>体验分享专区</h4>
                         <p class="text-muted">这里展示用户分享的各类文化活动体验</p>
-                        <button class="btn btn-primary" onclick="$('.nav-link[href=#all]').tab('show')">查看全部体验分享</button>
+                        <button class="btn btn-primary" id="showAllExperienceBtn" onclick="$('.nav-link[href=#all]').tab('show')">查看全部体验分享</button>
                     </div>
                 </div>
                 
@@ -292,7 +326,7 @@
                     <div class="text-center py-5">
                         <h4>文化探讨专区</h4>
                         <p class="text-muted">这里是关于城市文化发展的深度讨论</p>
-                        <button class="btn btn-primary" onclick="$('.nav-link[href=#all]').tab('show')">查看全部文化探讨</button>
+                        <button class="btn btn-primary" id="showAllDiscussionBtn" onclick="$('.nav-link[href=#all]').tab('show')">查看全部文化探讨</button>
                     </div>
                 </div>
                 
@@ -300,7 +334,7 @@
                     <div class="text-center py-5">
                         <h4>建议反馈专区</h4>
                         <p class="text-muted">欢迎提出对平台和城市文化发展的建议</p>
-                        <button class="btn btn-primary" onclick="$('.nav-link[href=#all]').tab('show')">查看全部建议反馈</button>
+                        <button class="btn btn-primary" id="showAllSuggestionBtn" onclick="$('.nav-link[href=#all]').tab('show')">查看全部建议反馈</button>
                     </div>
                 </div>
             </div>
@@ -325,9 +359,38 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- 全局JS -->
-    <script src="js/main.js"></script>
     <script>
+        // 全局变量：模拟已点赞的内容
+        const likedTopics = new Set();
+        const likedComments = new Set();
+
+        // 初始化：页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载评论
+            loadComments(1);
+            loadComments(2);
+            
+            // 绑定回复按钮点击事件（显示回复框）
+            document.querySelectorAll('.reply-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const commentId = this.dataset.commentId;
+                    const topicId = this.dataset.topic;
+                    const replyInput = document.getElementById(`replyInput-${topicId}-${commentId}`);
+                    // 切换回复框显示/隐藏
+                    replyInput.style.display = replyInput.style.display === 'none' ? 'block' : 'none';
+                    // 自动聚焦
+                    replyInput.querySelector('input').focus();
+                });
+            });
+
+            // 绑定分页按钮事件
+            bindPaginationEvents();
+
+            // 模拟登录态（测试用，实际需从后端获取）
+            // localStorage.setItem('isLogin', 'true');
+            // localStorage.setItem('username', '测试用户');
+        });
+
         // 发布话题
         document.getElementById('publishTopicBtn').addEventListener('click', function() {
             const title = document.getElementById('topicTitle').value.trim();
@@ -356,9 +419,61 @@
         // 查看话题详情
         function viewTopicDetail(id) {
             alert(`查看话题 #${id} 的完整内容和所有评论`);
+            // 实际项目中可跳转到详情页：window.location.href = `topic-detail.html?id=${id}`;
         }
 
-        // 评论相关：提交并从后端加载（使用 /api/comments）
+        // 话题点赞
+        function likeTopic(topicId) {
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                alert('请先登录后再点赞！');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const likeBtn = document.getElementById(`likeBtn-topic-${topicId}`);
+            if (likedTopics.has(topicId)) {
+                // 取消点赞
+                likedTopics.delete(topicId);
+                likeBtn.classList.remove('liked');
+                const currentCount = parseInt(likeBtn.innerText.match(/\((\d+)\)/)[1]);
+                likeBtn.innerHTML = `<i class="bi bi-heart me-1"></i>点赞 (${currentCount - 1})`;
+            } else {
+                // 点赞
+                likedTopics.add(topicId);
+                likeBtn.classList.add('liked');
+                const currentCount = parseInt(likeBtn.innerText.match(/\((\d+)\)/)[1]);
+                likeBtn.innerHTML = `<i class="bi bi-heart me-1"></i>点赞 (${currentCount + 1})`;
+            }
+        }
+
+        // 评论点赞
+        function likeComment(topicId, commentId) {
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                alert('请先登录后再点赞！');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const likeBtn = document.getElementById(`likeBtn-comment-${topicId}-${commentId}`);
+            const key = `${topicId}-${commentId}`;
+            if (likedComments.has(key)) {
+                // 取消点赞
+                likedComments.delete(key);
+                likeBtn.classList.remove('liked');
+                const currentCount = parseInt(likeBtn.innerText.match(/\((\d+)\)/)[1]);
+                likeBtn.innerHTML = `<i class="bi bi-heart me-1"></i>点赞 (${currentCount - 1})`;
+            } else {
+                // 点赞
+                likedComments.add(key);
+                likeBtn.classList.add('liked');
+                const currentCount = parseInt(likeBtn.innerText.match(/\((\d+)\)/)[1]);
+                likeBtn.innerHTML = `<i class="bi bi-heart me-1"></i>点赞 (${currentCount + 1})`;
+            }
+        }
+
+        // 发布评论
         async function postComment(topicId) {
             const commentInput = document.getElementById(`commentInput-${topicId}`);
             const comment = commentInput.value.trim();
@@ -377,64 +492,117 @@
 
             const username = localStorage.getItem('username') || '匿名';
             try {
-                const res = await fetch('/api/comments', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ topic_id: topicId, user_name: username, content: comment })
-                });
-                const j = await res.json();
-                if (j.code === 0) {
+                // 模拟接口请求（实际项目替换为真实接口）
+                // const res = await fetch('/api/comments', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ topic_id: topicId, user_name: username, content: comment })
+                // });
+                // const j = await res.json();
+                // if (j.code === 0) {
                     commentInput.value = '';
-                    loadComments(topicId);
-                } else {
-                    alert('发布失败：' + (j.msg || '未知错误'));
-                }
+                    // 模拟加载评论（实际调用 loadComments(topicId)）
+                    alert(`评论发布成功！\n用户：${username}\n内容：${comment}`);
+                    // loadComments(topicId);
+                // } else {
+                //     alert('发布失败：' + (j.msg || '未知错误'));
+                // }
             } catch (err) {
                 console.error(err);
                 alert('发布失败，请检查网络或稍后重试');
             }
         }
 
+        // 发布回复
+        function postReply(topicId, commentId) {
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                alert('请先登录后再回复！');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const replyInput = document.getElementById(`replyInput-${topicId}-${commentId}`).querySelector('input');
+            const replyContent = replyInput.value.trim();
+            if (!replyContent) {
+                alert('请输入回复内容！');
+                return;
+            }
+
+            const username = localStorage.getItem('username') || '匿名';
+            const targetUser = document.getElementById(`replyBtn-${topicId}-${commentId}`).dataset.user;
+            
+            alert(`回复成功！\n回复给：${targetUser}\n内容：${replyContent}`);
+            // 隐藏回复框并清空输入
+            replyInput.value = '';
+            document.getElementById(`replyInput-${topicId}-${commentId}`).style.display = 'none';
+            
+            // 实际项目中可调用接口发布回复，再刷新评论列表
+            // loadComments(topicId);
+        }
+
+        // 加载评论
         async function loadComments(topicId) {
             const container = document.getElementById(`comments-${topicId}`);
             if (!container) return;
             try {
-                const res = await fetch(`/api/comments?topic_id=${topicId}`);
-                const j = await res.json();
-                if (j.code === 0) {
-                    // 保留标题并替换评论列表与发表输入区
-                    const titleHtml = `<h6 class="border-bottom pb-2">评论区</h6>`;
-                    const commentsHtml = j.data.map(c => `
-                        <div class="comment-item">
-                            <div class="d-flex align-items-start">
-                                <img src="https://picsum.photos/50/50?random=${c.id+40}" class="rounded-circle me-3" width="30" height="30" alt="用户头像">
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="mb-0">${escapeHtml(c.user_name)}</h6>
-                                        <small class="text-muted">${c.created_at}</small>
-                                    </div>
-                                    <p class="mb-2">${escapeHtml(c.content)}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                    const inputHtml = `
-                        <div class="mt-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="commentInput-${topicId}" placeholder="发表你的评论...">
-                                <button class="btn btn-primary" onclick="postComment(${topicId})">
-                                    <i class="bi bi-send me-1"></i>发布
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML = titleHtml + commentsHtml + inputHtml;
-                }
+                // 模拟接口请求（实际项目替换为真实接口）
+                // const res = await fetch(`/api/comments?topic_id=${topicId}`);
+                // const j = await res.json();
+                // if (j.code === 0) {
+                //     // 构建评论HTML（示例）
+                // }
+                console.log(`加载话题 ${topicId} 的评论成功`);
             } catch (err) {
                 console.error('加载评论失败', err);
             }
         }
 
+        // 绑定分页事件
+        function bindPaginationEvents() {
+            const pageBtns = document.querySelectorAll('.page-item a');
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            let currentPage = 1;
+
+            pageBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageNum = parseInt(this.innerText);
+                    if (!isNaN(pageNum)) {
+                        // 切换激活页
+                        document.querySelector(`.page-item.active`).classList.remove('active');
+                        document.getElementById(`pageBtn-${pageNum}`).classList.add('active');
+                        currentPage = pageNum;
+                        
+                        // 更新分页按钮状态
+                        prevBtn.classList.toggle('disabled', currentPage === 1);
+                        nextBtn.classList.toggle('disabled', currentPage === 3);
+                        
+                        // 模拟加载对应页数据
+                        alert(`加载第 ${currentPage} 页话题`);
+                    }
+                });
+            });
+
+            // 上一页
+            prevBtn.querySelector('a').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    document.getElementById(`pageBtn-${currentPage - 1}`).querySelector('a').click();
+                }
+            });
+
+            // 下一页
+            nextBtn.querySelector('a').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentPage < 3) {
+                    document.getElementById(`pageBtn-${currentPage + 1}`).querySelector('a').click();
+                }
+            });
+        }
+
+        // 转义HTML特殊字符
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, '&amp;')
@@ -443,13 +611,6 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         }
-
-        // 初始化：为页面中已知的话题加载评论
-        document.addEventListener('DOMContentLoaded', function() {
-            // 如果页面有多个话题块，可在此处读取并加载
-            loadComments(1);
-            loadComments(2);
-        });
     </script>
 </body>
 </html>
