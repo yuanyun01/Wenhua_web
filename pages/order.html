@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>我的订单 - 城市文化平台</title>
+   <!-- Bootstrap 5 CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <!-- 图标库 -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <style>
+        /* 订单页面专属样式 */
+        .order-section {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .order-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .btn-back-personal {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-back-personal:hover {
+            background: #5a6268;
+            color: #fff;
+        }
+
+        /* 订单分类标签样式 */
+        .order-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .order-tab {
+            padding: 8px 20px;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .order-tab.active {
+            background: #0d6efd;
+            color: #fff;
+            border-color: #0d6efd;
+        }
+        .order-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        /* 重构：订单列表样式（卡片式，支持点击跳转） */
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .order-card:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-color: #ddd;
+        }
+        /* 订单状态标签 */
+        .order-status-tag {
+            position: absolute;
+            top: 20px;
+            /* 原 right: 20px; 改为更大的数值，向左移动，留出与单价的间隔 */
+            right: 200px; 
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #fff;
+            /* 可选：增加层级，避免被其他内容遮挡 */
+            z-index: 10;
+        }
+        .status-paid { background: #28a745; } /* 待使用 */
+        .status-refund { background: #dc3545; } /* 已退款 */
+        .status-used { background: #20c997; } /* 已使用 */
+        .status-expired { background: #6c757d; } /* 已过期 */
+
+        /* 订单内容布局（左侧活动信息，右侧价格/数量/总价） */
+        .order-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .order-activity-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        .order-item-img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .order-activity-desc {
+            flex: 1;
+        }
+        .order-activity-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 5px 0;
+        }
+        .order-activity-brief {
+            font-size: 13px;
+            color: #666;
+            margin: 0;
+        }
+        /* 右侧价格信息（上：单价，中：数量，下：总价） */
+        .order-price-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            min-width: 120px;
+        }
+        .order-unit-price, .order-count, .order-total-price {
+            font-size: 14px;
+            color: #333;
+        }
+        .order-total-price {
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        /* 订单操作区域（退款 + 查看详情 + 删除订单） */
+        .order-operation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
+        }
+        /* 左侧操作按钮（退票/删除） */
+        .order-operation-left {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-cancel-order {
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none; /* 默认隐藏，待使用订单显示 */
+        }
+        .btn-cancel-order:hover {
+            background: #bb2d3b;
+        }
+        .btn-cancel-order:disabled {
+            background: #ced4da;
+            cursor: not-allowed;
+        }
+        .btn-delete-order {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none; /* 默认隐藏，非待使用订单显示 */
+        }
+        .btn-delete-order:hover {
+            background: #5a6268;
+        }
+        .btn-order-detail {
+            background: #0d6efd;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .btn-order-detail:hover {
+            background: #0b5ed7;
+        }
+
+        /* 订单详情展开区域（默认隐藏） */
+        .order-detail-expand {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+        .order-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+        .order-detail-label {
+            color: #666;
+        }
+        .order-detail-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 订单空状态样式 */
+        .order-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 16px;
+        }
+        .order-empty i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ced4da;
+        }
+   </style>
+</head>
+<body>
+    <!-- 公共导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="culture.html">文化资源</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">文化活动</a></li>
+                    <li class="nav-item"><a class="nav-link" href="forum.html">互动交流</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 订单列表区域 -->
+    <div class="order-section" id="orderSection">
+        <div class="order-header">
+            <h2 class="order-title">我的订单</h2>
+            <button class="btn-back-personal" id="backPersonalBtn">
+                <i class="bi bi-arrow-left"></i>返回个人中心
+            </button>
+        </div>
+        
+        <!-- 订单分类标签 -->
+        <div class="order-tabs">
+            <div class="order-tab active" data-tab="all">全部订单</div>
+            <div class="order-tab" data-tab="unused">待使用</div>
+            <div class="order-tab" data-tab="refund-used">已退款/已使用</div>
+            <div class="order-tab" data-tab="expired">已过期</div>
+        </div>
+        
+        <!-- 订单列表（卡片式，替代原表格） -->
+        <div class="order-list" id="orderListContainer">
+            <!-- 订单内容通过JS动态渲染 -->
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 全局变量
+        const orderSection = document.getElementById('orderSection');
+        const orderListContainer = document.getElementById('orderListContainer');
+        const orderTabs = document.querySelectorAll('.order-tab');
+        const backPersonalBtn = document.getElementById('backPersonalBtn');
+        let orderData = {}; // 全局订单数据
+        let eventDataList = window.eventDataList || []; // 活动数据（从全局获取）
+
+        // ---------------------- 工具函数 ----------------------
+        /**
+         * 判断活动是否未开始（用于启用/禁用退票按钮）
+         * @param {string} activityTimeStr 活动时间字符串
+         * @returns {boolean} 未开始返回true，否则返回false
+         */
+        function isActivityNotStarted(activityTimeStr) {
+            if (activityTimeStr.includes('至')) {
+                // 时间段活动，取开始时间判断
+                const startTimeStr = activityTimeStr.split('至')[0].trim();
+                const activityTime = new Date(startTimeStr).getTime();
+                const currentTime = new Date().getTime();
+                return activityTime > currentTime;
+            }
+            const activityTime = new Date(activityTimeStr).getTime();
+            const currentTime = new Date().getTime();
+            return activityTime > currentTime;
+        }
+
+        /**
+         * 获取活动信息（通过活动名称匹配，建立订单与活动的关联）
+         * @param {string} activityName 活动名称
+         * @returns {object} 活动完整信息，无匹配返回默认非遗展信息
+         */
+        function getActivityInfoByName(activityName) {
+            const matchedEvent = eventDataList.find(item => item.title === activityName);
+            // 返回完整活动信息，默认值保证图片不丢失
+            return matchedEvent || {
+                id: 1,
+                title: '非遗精品展 - 匠心传承',
+                cover: 'image/非遗精品展.png'
+            };
+        }
+
+        /**
+         * 订单按支付时间降序排序（新支付的订单排在前面）
+         * @param {array} orderArray 原始订单数组
+         * @returns {array} 排序后的订单数组（降序，新支付订单在前）
+         */
+        function sortOrdersByPayTimeDesc(orderArray) {
+            return orderArray.sort((a, b) => {
+                // 转换支付时间为时间戳，兼容无支付时间的订单（赋予当前时间戳）
+                const payTimeA = a.orderPayTime ? new Date(a.orderPayTime).getTime() : Date.now();
+                const payTimeB = b.orderPayTime ? new Date(b.orderPayTime).getTime() : Date.now();
+                // 降序排序：支付时间戳大的在前（新支付的订单排在前面）
+                return payTimeB - payTimeA;
+            });
+        }
+
+        /**
+         * 渲染订单列表（卡片式，支持分类筛选 + 支付时间降序排序）
+         * @param {string} tabType 订单分类类型（all/unused/refund-used/expired）
+         */
+        function renderOrderList(tabType = 'all') {
+            // 1. 清空原有订单列表
+            orderListContainer.innerHTML = '';
+            
+            // 2. 筛选对应分类的订单
+            const filteredOrders = Object.values(orderData).filter(order => {
+                return tabType === 'all' || order.orderTabType === tabType;
+            });
+            
+            // 3. 按支付时间降序排序（核心：新支付的订单排在前面）
+            const sortedOrders = sortOrdersByPayTimeDesc(filteredOrders);
+            
+            // 4. 处理空状态
+            if (sortedOrders.length === 0) {
+                const emptyHtml = `
+                    <div class="order-empty">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <p>无该类型订单</p>
+                    </div>
+                `;
+                orderListContainer.innerHTML = emptyHtml;
+                return;
+            }
+            
+            // 5. 循环渲染排序后的订单卡片
+            sortedOrders.forEach(order => {
+                // 获取活动完整信息（重点：拿到真实封面图）
+                const activityInfo = getActivityInfoByName(order.orderActivityName);
+                const activityId = activityInfo.id;
+                const activityCover = activityInfo.cover; // 活动真实封面图
+                const canOperate = isActivityNotStarted(order.orderActivityTime) && !order.isExpired && !order.isRefundOrUsed;
+                const isUnused = order.orderTabType === 'unused'; // 是否为待使用订单
+                const isDeletable = !isUnused; // 非待使用订单可删除
+                
+                // 关键修正1：定义orderRemark变量，处理备注空值（无内容显示“无”）
+                const orderRemark = (order.remark && order.remark.trim()) || '无';
+                
+                // 构建订单卡片HTML
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                orderCard.setAttribute('data-order-no', order.orderNo);
+                orderCard.setAttribute('data-activity-id', activityId); // 存储活动ID，用于跳转
+                
+                orderCard.innerHTML = `
+                    <!-- 订单状态标签 -->
+                    <div class="order-status-tag ${order.orderStatusClass}">${order.orderStatus}</div>
+                    
+                    <!-- 订单核心内容（左侧活动信息，右侧价格信息） -->
+                    <div class="order-card-content">
+                        <div class="order-activity-info">
+                            <!-- 替换随机图为活动真实封面图 -->
+                            <img src="${activityCover}" 
+                                 alt="${order.orderActivityName}" class="order-item-img">
+                            <div class="order-activity-desc">
+                                <h3 class="order-activity-name">${order.orderActivityName}</h3>
+                                <p class="order-activity-brief">${order.orderActivityDesc.substring(0, 50)}...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="order-price-info">
+                            <div class="order-unit-price">单价：${order.orderUnitPrice}</div>
+                            <div class="order-count">数量：${order.orderCount}张</div>
+                            <div class="order-total-price">总价：${order.orderTotalPrice}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 订单操作区域（新增左侧操作按钮容器，区分退票/删除） -->
+                    <div class="order-operation">
+                        <div class="order-operation-left">
+                            <button class="btn-cancel-order" ${canOperate ? '' : 'disabled'}>
+                                ${order.isFree ? '取消预约' : '退票'}
+                            </button>
+                            <button class="btn-delete-order" data-order-no="${order.orderNo}">
+                                <i class="bi bi-trash me-1"></i>删除订单
+                            </button>
+                        </div>
+                        <button class="btn-order-detail" data-order-no="${order.orderNo}">查看详情</button>
+                    </div>
+                    
+                    <!-- 订单详情展开区域 -->
+                    <div class="order-detail-expand" id="detail-${order.orderNo}">
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">订单编号</div>
+                            <div class="order-detail-value">${order.orderNo}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">支付时间</div>
+                            <div class="order-detail-value">${order.orderPayTime}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">联系人姓名</div>
+                            <!-- 关键修正2：联系人姓名空值兼容，无数据显示“无” -->
+                            <div class="order-detail-value">${order.contactName || '无'}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">联系电话</div>
+                            <!-- 关键修正3：联系电话空值兼容，无数据显示“无” -->
+                            <div class="order-detail-value">${order.contactPhone || '无'}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">活动时间</div>
+                            <div class="order-detail-value">${order.orderActivityTime}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">备注</div>
+                            <!-- 使用处理后的orderRemark变量，确保空值显示“无” -->
+                            <div class="order-detail-value">${orderRemark}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 6. 追加到订单列表容器
+                orderListContainer.appendChild(orderCard);
+                
+                // 7. 控制操作按钮显示/隐藏
+                if (isUnused && canOperate) {
+                    // 待使用订单：显示退票/取消预约按钮，隐藏删除按钮
+                    orderCard.querySelector('.btn-cancel-order').style.display = 'inline-block';
+                    orderCard.querySelector('.btn-delete-order').style.display = 'none';
+                } else if (isDeletable) {
+                    // 非待使用订单（已退款/已使用/已过期）：显示删除按钮，隐藏退票按钮
+                    orderCard.querySelector('.btn-delete-order').style.display = 'inline-block';
+                    orderCard.querySelector('.btn-cancel-order').style.display = 'none';
+                } else {
+                    // 待使用但不可操作（活动已临近/开始）：两个按钮都隐藏
+                    orderCard.querySelector('.btn-cancel-order').style.display = 'none';
+                    orderCard.querySelector('.btn-delete-order').style.display = 'none';
+                }
+            });
+            
+            // 8. 绑定所有事件（订单跳转、查看详情、退票、删除订单）
+            bindOrderCardEvents();
+        }
+
+        /**
+         * 绑定订单卡片相关事件（跳转活动详情、查看详情展开、退票、删除订单）
+         */
+        function bindOrderCardEvents() {
+            // 1. 订单卡片点击 → 跳转活动详情
+            const orderCards = document.querySelectorAll('.order-card');
+            orderCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // 排除操作按钮和详情区域，避免点击按钮时触发跳转
+                    if (e.target.closest('.btn-order-detail') || e.target.closest('.btn-cancel-order') || 
+                        e.target.closest('.btn-delete-order') || e.target.closest('.order-detail-expand')) {
+                        return;
+                    }
+                    const activityId = this.getAttribute('data-activity-id');
+                    window.location.href = `event_detail.html?id=${activityId}`; // 跳转至活动详情页
+                });
+            });
+            
+            // 2. 查看详情按钮 → 展开/收起订单详情
+            const detailBtns = document.querySelectorAll('.btn-order-detail');
+            detailBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡，避免触发订单跳转
+                    const orderNo = this.getAttribute('data-order-no');
+                    const detailArea = document.getElementById(`detail-${orderNo}`);
+                    detailArea.style.display = detailArea.style.display === 'block' ? 'none' : 'block';
+                    
+                    // 切换按钮文本
+                    this.textContent = detailArea.style.display === 'block' ? '收起详情' : '查看详情';
+                });
+            });
+            
+            // 3. 退票/取消预约按钮 → 处理订单状态更新
+            const cancelBtns = document.querySelectorAll('.btn-cancel-order');
+            cancelBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡，避免触发订单跳转
+                    if (this.disabled) return;
+                    
+                    const orderCard = this.closest('.order-card');
+                    const orderNo = orderCard.getAttribute('data-order-no');
+                    const order = orderData[orderNo];
+                    if (!order) return;
+                    
+                    const operateText = order.isFree ? '取消预约' : '退票';
+                    if (confirm(`确定要${operateText}吗？操作后不可恢复！`)) {
+                        // 更新订单状态数据
+                        order.orderStatus = "已退款";
+                        order.orderStatusClass = "status-refund";
+                        order.isExpired = true;
+                        order.isRefundOrUsed = true;
+                        order.orderTabType = 'refund-used';
+                        
+                        // 更新页面显示
+                        orderCard.querySelector('.order-status-tag').className = `order-status-tag ${order.orderStatusClass}`;
+                        orderCard.querySelector('.order-status-tag').textContent = order.orderStatus;
+                        this.style.display = 'none'; // 隐藏退票按钮
+                        orderCard.querySelector('.btn-delete-order').style.display = 'inline-block'; // 显示删除按钮
+                        
+                        // 持久化更新后的订单（同步到localStorage）
+                        const storedOrders = JSON.parse(localStorage.getItem('userCulturalOrders') || '{}');
+                        storedOrders[orderNo] = order;
+                        localStorage.setItem('userCulturalOrders', JSON.stringify(storedOrders));
+                        
+                        // 提示操作成功并刷新订单列表（保持排序状态）
+                        alert(`${operateText}成功！订单状态已更新为${order.orderStatus}`);
+                        const activeTab = document.querySelector('.order-tab.active');
+                        const tabType = activeTab.getAttribute('data-tab');
+                        renderOrderList(tabType);
+                    }
+                });
+            });
+            
+            // 4. 新增：删除订单按钮 → 移除订单并同步到localStorage
+            const deleteBtns = document.querySelectorAll('.btn-delete-order');
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡，避免触发订单跳转
+                    const orderNo = this.getAttribute('data-order-no');
+                    const order = orderData[orderNo];
+                    if (!order) return;
+                    
+                    // 二次确认，防止误删
+                    if (confirm('确定要删除该订单吗？删除后不可恢复！')) {
+                        // 1. 从全局订单数据中移除
+                        delete orderData[orderNo];
+                        
+                        // 2. 从localStorage中移除（持久化删除）
+                        const storedOrders = JSON.parse(localStorage.getItem('userCulturalOrders') || '{}');
+                        delete storedOrders[orderNo];
+                        localStorage.setItem('userCulturalOrders', JSON.stringify(storedOrders));
+                        
+                        // 3. 提示删除成功并刷新订单列表（保持排序状态）
+                        alert('订单删除成功！');
+                        const activeTab = document.querySelector('.order-tab.active');
+                        const tabType = activeTab.getAttribute('data-tab');
+                        renderOrderList(tabType);
+                    }
+                });
+            });
+        }
+
+        // ---------------------- 其他事件绑定 ----------------------
+        /**
+         * 订单分类标签切换
+         */
+        orderTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                orderTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const tabType = this.getAttribute('data-tab');
+                renderOrderList(tabType);
+            });
+        });
+
+        /**
+         * 返回个人中心
+         */
+        backPersonalBtn.addEventListener('click', function() {
+            window.location.href = 'personal.html';
+        });
+
+        // ---------------------- 页面初始化 ----------------------
+        window.onload = function() {
+            // 1. 初始化完整活动数据（兼容未全局定义的情况，保持与活动详情页一致）
+            if (!window.eventDataList) {
+                window.eventDataList = [
+                    {
+                        id: 1,
+                        title: '非遗精品展 - 匠心传承',
+                        type: 'exhibition',
+                        cover: 'image/非遗精品展.png',
+                        time: '2026-02-10 至 2026-03-10'
+                    },
+                    {
+                        id: 2,
+                        title: '经典戏曲《牡丹亭》演出',
+                        type: 'performance',
+                        cover: 'image/牡丹亭.png',
+                        time: '2026-02-15 19:30'
+                    },
+                    {
+                        id: 3,
+                        title: '非遗剪纸手作体验课',
+                        type: 'experience',
+                        cover: 'image/非遗剪纸.png',
+                        time: '2026-02-20 14:00'
+                    },
+                    {
+                        id: 4,
+                        title: '城市文化发展高峰论坛',
+                        type: 'lecture',
+                        cover: 'image/城市文化发展高峰论坛.png',
+                        time: '2026-01-25 09:00'
+                    },
+                    {
+                        id: 5, 
+                        title: "新春民俗灯会",
+                        type: "exhibition",
+                        cover: "image/灯会.png",
+                        time: "2026-01-20 至 2026-02-05"
+                    },
+                    {
+                        id: 6, 
+                        title: "亲子陶艺体验课",
+                        type: "experience",
+                        cover: "image/陶艺.png",
+                        time: "2026-01-25 14:00-16:00"
+                    },
+                    {
+                        id: 7, 
+                        title: "新年音乐会",
+                        type: "performance",
+                        cover: "image/音乐会.png",
+                        time: "2026-01-30 19:30"
+                    }
+                ];
+            }
+            eventDataList = window.eventDataList;
+            
+            // 2. 从localStorage读取用户真实订单
+            const storedOrders = JSON.parse(localStorage.getItem('userCulturalOrders') || '{}');
+            const currentUser = localStorage.getItem('username') || "guest";
+            const userOrders = {};
+            
+            // 3. 筛选当前用户的订单
+            for (const [orderNo, order] of Object.entries(storedOrders)) {
+                if (order.userId === currentUser) {
+                    userOrders[orderNo] = order;
+                }
+            }
+            
+            // 4. 赋值给全局订单数据并渲染（渲染时会自动按支付时间排序）
+            orderData = userOrders;
+            renderOrderList('all');
+        };
+    </script>
+</body>
+</html>

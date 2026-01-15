@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // 检查登录状态
-function checkLoginStatus() {
+/*function checkLoginStatus() {
     const isLogin = localStorage.getItem('isLogin') === 'true';
     const username = localStorage.getItem('username');
     
@@ -31,6 +31,44 @@ function checkLoginStatus() {
                 window.location.reload();
             });
         }
+    }
+}*/
+// 检查登录状态
+function checkLoginStatus() {
+    const navRight = document.querySelector('.navbar .d-flex');
+    
+    // 容错处理：如果未获取到导航栏元素，直接终止函数并打印日志
+    if (!navRight) {
+        console.warn('未找到导航栏的用户操作区域，请检查DOM结构');
+        return;
+    }
+
+    const isLogin = localStorage.getItem('isLogin') === 'true';
+    const username = localStorage.getItem('username');
+    const userNav = document.getElementById('userNav');
+    
+    // 2. 已登录状态
+    if (isLogin && username) {
+        navRight.innerHTML = `
+            <span class="navbar-text me-3 text-light">欢迎，${username}</span>
+            <a href="personal.html" class="btn btn-outline-light">个人中心</a>
+        `;
+        
+        // 绑定个人中心跳转事件
+        document.getElementById('userCenterBtn').addEventListener('click', function() {
+            window.location.href = 'personal.html';
+        });
+    } 
+    // 3. 未登录状态：兜底恢复为“登录/注册”
+    else {
+        navRight.innerHTML = `
+            <button class="btn btn-outline-light me-2" id="loginBtn">登录</button>
+            <a href="login.html" class="btn btn-primary" id="registerLink">注册</a>
+        `;
+        // 绑定未登录状态的登录按钮跳转事件
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
     }
 }
 

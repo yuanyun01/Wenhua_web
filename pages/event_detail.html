@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动详情 - 城市文化产业宣传与促进平台</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- 自定义样式 -->
+    <style>
+        .detail-img {
+            height: 400px;
+            object-fit: cover;
+        }
+        .info-item {
+            margin-bottom: 10px;
+        }
+        .btn-group-detail {
+            gap: 10px;
+        }
+        .related-card {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .related-card:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="culture.html">文化资源</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="events.html">文化活动</a></li>
+                    <li class="nav-item"><a class="nav-link" href="forum.html">互动交流</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
+                </ul>
+                <div class="d-flex" id="userNav">
+                    <a href="login.html" class="btn btn-outline-light me-2">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <header class="py-3 bg-light border-bottom">
+        <div class="container">
+            <a href="events.html" class="text-primary text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i>返回活动列表
+            </a>
+        </div>
+    </header>
+
+    <!-- 活动详情内容 -->
+    <section class="py-5">
+        <div class="container">
+            <!-- 活动封面 -->
+            <div class="mb-4">
+                <img id="eventDetailImg" src="https://picsum.photos/1200/400?random=10" class="img-fluid detail-img rounded shadow-sm w-100" alt="活动封面">
+            </div>
+
+            <!-- 活动基本信息 -->
+            <div class="row mb-5">
+                <div class="col-md-8">
+                    <h1 id="eventTitle" class="mb-3">非遗精品展 - 匠心传承</h1>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-danger">热门</span>
+                        <span class="badge bg-info">展览</span>
+                        <span class="badge bg-success">免费</span>
+                    </div>
+                    
+                    <!-- 核心信息 -->
+                    <div class="info-item"><i class="bi bi-calendar-check text-primary me-2"></i> <strong>活动时间：</strong> <span id="eventTime">2026-02-10 至 2026-03-10</span></div>
+                    <div class="info-item"><i class="bi bi-geo-alt text-primary me-2"></i> <strong>活动地点：</strong> <span id="eventLocation">市博物馆 1号展厅</span></div>
+                    <div class="info-item"><i class="bi bi-people text-primary me-2"></i> <strong>活动名额：</strong> <span id="eventQuota" class="fw-bold">286/500</span></div>
+                    <div class="info-item"><i class="bi bi-clock text-primary me-2"></i> <strong>预约截止：</strong> <span id="eventDeadline">2026-02-09 18:00</span></div>
+                    
+                    <!-- 操作按钮 -->
+                    <div class="btn-group-detail mt-4">
+                        <a href="ticket.html?id=1" class="btn btn-primary">
+                            <i class="bi bi-ticket-detailed me-2"></i>立即预约/购票
+                        </a>
+                        
+                        <button class="btn btn-outline-primary" id="collectBtn">
+                            <i class="bi bi-heart me-2"></i>收藏活动
+                        </button>
+
+                        <button class="btn btn-outline-secondary" id="shareBtn">
+                            <i class="bi bi-share me-2"></i>分享活动
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 侧边信息 -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>参与须知</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>凭预约码/购票凭证入场</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>禁止携带食品饮料</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>可免费领取讲解手册</li>
+                                <li><i class="bi bi-exclamation-circle text-warning me-2"></i>1.2米以下儿童需陪同</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动详情介绍 -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-book me-2"></i>活动详情</h5>
+                </div>
+                <div class="card-body" id="eventContent">
+                    <p>本次非遗精品展汇集了本市近百位非遗传承人的代表作品，涵盖剪纸、木雕、刺绣、陶艺等多个品类，展示了传统工艺的精湛技艺和文化内涵。</p>
+                    <p>展览期间，每天将安排2场非遗技艺现场演示（10:00/15:00），观众可近距离观看传承人创作过程，并参与互动体验环节。</p>
+                    <p>展览免费向公众开放，无需购票，但需提前预约入场名额，每日限流500人。</p>
+                    <h6 class="mt-3">展览亮点：</h6>
+                    <ul>
+                        <li>百年历史的非遗珍品首次公开展出</li>
+                        <li>传承人现场教学，体验非遗制作</li>
+                        <li>扫码听讲解，了解每件作品的故事</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 相关推荐 -->
+            <div>
+                <h3 class="mb-4"><i class="bi bi-hand-thumbs-up me-2"></i>相关推荐活动</h3>
+                <div class="row g-4" id="relatedEvents">
+                    <!-- 相关活动卡片（动态渲染） -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-building-columns me-2"></i>城市文化产业宣传与促进平台</h5>
+                    <p>致力于推广城市文化，促进文化产业发展</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>© 2026 城市文化平台 版权所有</p>
+                    <p>隐私政策 | 服务条款</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 兼容处理：优先使用全局数据，无则使用本地默认数据
+        if (!window.eventDataList) {
+            window.eventDataList = [
+                {
+                    id: 1,
+                    title: '非遗精品展 - 匠心传承',
+                    type: 'exhibition',
+                    cover: 'image/非遗精品展.png',
+                    time: '2026-02-10 至 2026-03-10',
+                    location: '市博物馆 1号展厅',
+                    quota: '500',
+                    deadline: '2026-02-09 18:00',
+                    tags: ['热门', '展览', '免费'],
+                    content: `
+                        <p>本次非遗精品展汇集了本市近百位非遗传承人的代表作品，涵盖剪纸、木雕、刺绣、陶艺等多个品类，展示了传统工艺的精湛技艺和文化内涵。</p>
+                        <p>展览期间，每天将安排2场非遗技艺现场演示（10:00/15:00），观众可近距离观看传承人创作过程，并参与互动体验环节。</p>
+                        <p>展览免费向公众开放，无需购票，但需提前预约入场名额，每日限流500人。</p>
+                        <h6 class="mt-3">展览亮点：</h6>
+                        <ul>
+                            <li>百年历史的非遗珍品首次公开展出</li>
+                            <li>传承人现场教学，体验非遗制作</li>
+                            <li>扫码听讲解，了解每件作品的故事</li>
+                        </ul>
+                    `,
+                    related: [2, 4]
+                },
+                {
+                    id: 2,
+                    title: '经典戏曲《牡丹亭》演出',
+                    type: 'performance',
+                    cover: 'image/牡丹亭.png',
+                    time: '2026-02-15 19:30',
+                    location: '市大剧院 歌剧厅',
+                    quota: '800',
+                    deadline: '2026-02-14 24:00',
+                    tags: ['售票中', '演出', '戏曲'],
+                    content: `
+                        <p>经典昆曲《牡丹亭》将在市大剧院上演，由国家一级演员领衔主演，全本演绎这段跨越生死的爱情故事。</p>
+                        <p>本次演出融入现代舞台技术，在保留经典唱腔的基础上，通过灯光、舞美等手段提升视觉效果，让观众感受传统戏曲的新魅力。</p>
+                        <h6 class="mt-3">演出信息：</h6>
+                        <ul>
+                            <li>演出时长：约150分钟（含中场休息15分钟）</li>
+                            <li>票价：80-680元</li>
+                            <li>适合人群：戏曲爱好者、文化爱好者</li>
+                        </ul>
+                    `,
+                    related: [1, 3]
+                },
+                {
+                    id: 3,
+                    title: '非遗剪纸手作体验课',
+                    type: 'experience',
+                    cover: 'image/非遗剪纸.png',
+                    time: '2026-02-20 14:00',
+                    location: '市文化馆 3楼体验室',
+                    quota: '30',
+                    deadline: '2026-02-19 18:00',
+                    tags: ['预约中', '体验课', '非遗'],
+                    content: `
+                        <p>本次剪纸体验课邀请省级非遗传承人王老师授课，从零开始教大家制作传统剪纸作品。</p>
+                        <p>课程包含剪纸历史讲解、基础技法教学、作品创作三个环节，学员可带走自己制作的剪纸作品，所有材料由主办方提供。</p>
+                        <h6 class="mt-3">课程信息：</h6>
+                        <ul>
+                            <li>课程时长：2小时</li>
+                            <li>费用：58元/人（含材料）</li>
+                            <li>报名要求：8岁以上，无需基础</li>
+                        </ul>
+                    `,
+                    related: [1, 4]
+                },
+                {
+                    id: 4,
+                    title: '城市文化发展高峰论坛',
+                    type: 'lecture',
+                    cover: 'image/城市文化发展高峰论坛.png',
+                    time: '2026-01-25 09:00',
+                    location: '国际会议中心',
+                    quota: '200',
+                    deadline: '2026-01-24 18:00',
+                    tags: ['即将开始', '讲座', '付费'],
+                    content: `
+                        <p>本次高峰论坛邀请知名文化学者、行业专家和政府相关部门负责人，共同探讨城市文化产业发展的机遇与挑战。</p>
+                        <p>论坛设置主题演讲、圆桌对话、案例分享等环节，为城市文化产业发展提供新思路、新方向。</p>
+                        <h6 class="mt-3">论坛信息：</h6>
+                        <ul>
+                            <li>论坛时长：4小时</li>
+                            <li>费用：198元/人（含资料费、茶歇）</li>
+                            <li>参会福利：可获得文化产业研究报告电子版</li>
+                        </ul>
+                    `,
+                    related: [1, 2]
+                },
+                {
+                    id: 5, 
+                    title: "新春民俗灯会",
+                    type: "exhibition",
+                    cover: "image/灯会.png",
+                    time: "2026-01-20 至 2026-02-05",
+                    location: "市文化广场",
+                    quota: "1000",
+                    deadline: "2026-01-19 18:00",
+                    tags: ["热门", "展览", "免费"],
+                    content: `
+                        <p>新春民俗灯会汇集了上千盏传统花灯，涵盖生肖、民俗故事等主题，夜晚点亮后美轮美奂。</p>
+                        <p>灯会期间每天18:00-22:00开放，现场还有民俗表演、小吃市集等配套活动。</p>
+                        <h6 class="mt-3">灯会亮点：</h6>
+                        <ul>
+                            <li>10米高的巨型生肖花灯首次亮相</li>
+                            <li>每晚19:00有非遗舞龙舞狮表演</li>
+                            <li>免费领取新春祈福灯笼</li>
+                        </ul>
+                    `,
+                    related: [1, 4]
+                },
+                {
+                    id: 6, 
+                    title: "亲子陶艺体验课",
+                    type: "experience",
+                    cover: "image/陶艺.png",
+                    time: "2026-01-25 14:00-16:00",
+                    location: "市手工艺体验馆 2楼陶艺室",
+                    quota: "30",
+                    deadline: "2026-01-24 18:00",
+                    tags: ["预约中", "体验课", "亲子"],
+                    content: `
+                        <p>亲子陶艺体验课由专业陶艺师授课，适合5-12岁儿童与家长共同参与。</p>
+                        <p>课程包含陶艺基础教学、亲子合作制作陶艺作品、作品上釉（可后续邮寄到家）等环节，材料工具全包含。</p>
+                        <h6 class="mt-3">课程信息：</h6>
+                        <ul>
+                            <li>课程时长：2小时</li>
+                            <li>费用：128元/组（1大1小）</li>
+                            <li>成品：可带走1件烧制好的作品（约7天后邮寄）</li>
+                        </ul>
+                    `,
+                    related: [3, 5]
+                },
+                {
+                    id: 7, 
+                    title: "新年音乐会",
+                    type: "performance",
+                    cover: "image/音乐会.png",
+                    time: "2026-01-30 19:30",
+                    location: "市音乐厅 主厅",
+                    quota: "1200",
+                    deadline: "2026-01-29 24:00",
+                    tags: ["售票中", "演出", "音乐"],
+                    content: `
+                        <p>新年音乐会由市交响乐团演奏，曲目涵盖经典交响乐、新年主题乐曲，还有流行音乐改编作品。</p>
+                        <p>演出时长约90分钟，中场休息15分钟，现场提供新年伴手礼。</p>
+                        <h6 class="mt-3">演出信息：</h6>
+                        <ul>
+                            <li>指挥：国家一级指挥张XX</li>
+                            <li>票价：180元（惠民票）-880元（VIP区）</li>
+                            <li>适合人群：音乐爱好者、家庭观众</li>
+                        </ul>
+                    `,
+                    related: [2, 5]
+                }
+            ];
+        }
+        const eventDataList = window.eventDataList;
+        let currentEvent = null; // 全局保存当前活动数据，方便所有函数调用
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取URL中的活动ID参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = parseInt(urlParams.get('id')) || 1;
+            
+            // 获取当前活动数据
+            currentEvent = eventDataList.find(item => item.id === eventId);
+            if (!currentEvent) {
+                alert('未找到该活动信息');
+                window.location.href = 'events.html';
+                return;
+            }
+            
+            // 渲染活动详情
+            renderEventDetail(currentEvent);
+            
+            // 渲染相关推荐活动
+            renderRelatedEvents(currentEvent.related);
+            
+            // 绑定收藏/分享按钮事件
+            bindDetailButtons();
+            
+            // 初始化收藏按钮状态（关键：页面加载时就读取本地存储，同步收藏状态）
+            initCollectBtnState();
+        });
+
+        // 渲染活动详情
+        function renderEventDetail(event) {
+            document.getElementById('eventDetailImg').src = event.cover;
+            document.getElementById('eventTitle').textContent = event.title;
+            document.getElementById('eventTime').textContent = event.time;
+            document.getElementById('eventLocation').textContent = event.location;
+            document.getElementById('eventQuota').textContent = event.quota;
+            document.getElementById('eventDeadline').textContent = event.deadline;
+            document.getElementById('eventContent').innerHTML = event.content;
+            
+            // 渲染标签
+            const tagContainer = document.querySelector('.d-flex.flex-wrap.gap-2');
+            tagContainer.innerHTML = '';
+            event.tags.forEach(tag => {
+                let badgeColor = 'bg-info';
+                if (tag === '热门') badgeColor = 'bg-danger';
+                else if (tag === '售票中') badgeColor = 'bg-warning text-dark';
+                else if (tag === '预约中') badgeColor = 'bg-success';
+                else if (tag === '免费') badgeColor = 'bg-success';
+                else if (tag === '即将开始') badgeColor = 'bg-primary';
+                else if (tag === '付费') badgeColor = 'bg-secondary';
+                
+                const badge = document.createElement('span');
+                badge.className = `badge ${badgeColor}`;
+                badge.textContent = tag;
+                tagContainer.appendChild(badge);
+            });
+            
+            // 更新预约/购票按钮链接
+            const ticketBtn = document.querySelector('.btn-group-detail .btn-primary');
+            ticketBtn.href = `ticket.html?id=${event.id}`;
+        }
+
+        // 渲染相关推荐活动
+        function renderRelatedEvents(relatedIds) {
+            const relatedContainer = document.getElementById('relatedEvents');
+            relatedContainer.innerHTML = '';
+            
+            const relatedEvents = eventDataList.filter(item => relatedIds.includes(item.id));
+            relatedEvents.forEach(event => {
+                const card = document.createElement('div');
+                card.className = 'col-md-3';
+                card.innerHTML = `
+                    <div class="card shadow-sm h-100 related-card" data-event-id="${event.id}">
+                        <img src="${event.cover}" class="card-img-top" alt="${event.title}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title">${event.title}</h6>
+                            <p class="card-text text-muted small">
+                                <i class="bi bi-calendar me-1"></i>${event.time.split(' ')[0]}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                relatedContainer.appendChild(card);
+                
+                // 相关活动卡片点击跳转
+                card.querySelector('.related-card').addEventListener('click', function() {
+                    window.location.href = `event_detail.html?id=${event.id}`;
+                });
+            });
+        }
+
+        // 绑定收藏/分享按钮事件
+        function bindDetailButtons() {
+            // 收藏按钮
+            const collectBtn = document.getElementById('collectBtn');
+            collectBtn.addEventListener('click', function() {
+                handleCollectOperation();
+            });
+
+            // 分享按钮
+            const shareBtn = document.getElementById('shareBtn');
+            shareBtn.addEventListener('click', function() {
+                const eventTitle = document.getElementById('eventTitle').textContent;
+                const shareUrl = window.location.href;
+                copyShareLink(shareUrl, eventTitle);
+            });
+
+            // 监听storage事件，同步收藏页面修改后的状态（比如在收藏页面取消收藏，同步更新当前页面按钮）
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'collectedEvents' && currentEvent) {
+                    initCollectBtnState();
+                }
+            });
+        }
+
+        // 初始化收藏按钮状态（从本地存储读取，展示已收藏/未收藏）
+        function initCollectBtnState() {
+            const collectBtn = document.getElementById('collectBtn');
+            const eventId = currentEvent.id;
+            const collectedIds = getCollectedEventIds();
+
+            // 根据本地存储更新按钮样式和文本
+            if (collectedIds.includes(eventId)) {
+                collectBtn.classList.remove('btn-outline-primary');
+                collectBtn.classList.add('btn-primary');
+                collectBtn.innerHTML = '<i class="bi bi-heart-fill me-2"></i>已收藏';
+            } else {
+                collectBtn.classList.remove('btn-primary');
+                collectBtn.classList.add('btn-outline-primary');
+                collectBtn.innerHTML = '<i class="bi bi-heart me-2"></i>收藏活动';
+            }
+        }
+
+        // 处理收藏/取消收藏核心逻辑
+        function handleCollectOperation() {
+            const collectBtn = document.getElementById('collectBtn');
+            const eventId = currentEvent.id;
+
+            // 1. 验证登录状态
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                alert('请先登录后再收藏活动！');
+                window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
+                return;
+            }
+
+            // 2. 获取当前收藏列表
+            const collectedIds = getCollectedEventIds();
+            const isCollected = collectedIds.includes(eventId);
+
+            // 3. 处理收藏/取消收藏
+            if (isCollected) {
+                // 取消收藏：过滤掉当前活动ID
+                const newCollectedIds = collectedIds.filter(id => id !== eventId);
+                localStorage.setItem('collectedEvents', JSON.stringify(newCollectedIds));
+                
+                // 更新按钮状态
+                collectBtn.classList.remove('btn-primary');
+                collectBtn.classList.add('btn-outline-primary');
+                collectBtn.innerHTML = '<i class="bi bi-heart me-2"></i>收藏活动';
+                alert('已取消该活动收藏！');
+            } else {
+                // 新增收藏：添加当前活动ID到列表
+                collectedIds.push(eventId);
+                localStorage.setItem('collectedEvents', JSON.stringify(collectedIds));
+                
+                // 更新按钮状态
+                collectBtn.classList.remove('btn-outline-primary');
+                collectBtn.classList.add('btn-primary');
+                collectBtn.innerHTML = '<i class="bi bi-heart-fill me-2"></i>已收藏';
+                alert('收藏成功！');
+            }
+
+            // 4. 触发storage事件，通知收藏页面更新列表（跨页面联动）
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'collectedEvents',
+                newValue: JSON.stringify(localStorage.getItem('collectedEvents'))
+            }));
+        }
+
+        // 公共函数：获取已收藏活动ID列表（与收藏页面保持一致）
+        function getCollectedEventIds() {
+            const collectedStr = localStorage.getItem('collectedEvents') || '[]';
+            try {
+                return JSON.parse(collectedStr);
+            } catch (e) {
+                localStorage.setItem('collectedEvents', '[]');
+                return [];
+            }
+        }
+
+        // 复制分享链接
+        function copyShareLink(url, title) {
+            navigator.clipboard.writeText(url).then(() => {
+                // 关闭旧弹窗
+                const oldModal = document.querySelector('.share-modal');
+                if (oldModal) oldModal.remove();
+
+                // 创建分享弹窗
+                const shareModal = document.createElement('div');
+                shareModal.className = 'share-modal';
+                shareModal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.3);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    backdrop-filter: blur(5px);
+                `;
+                shareModal.innerHTML = `
+                    <div class="card shadow-lg" style="width: 360px; border-radius: 12px; overflow: hidden; border: none;">
+                        <div class="card-header bg-primary text-white py-3" style="border-bottom: none;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">分享${title}</h5>
+                                <button type="button" class="btn-close btn-close-white" id="closeShareModal"></button>
+                            </div>
+                        </div>
+                        <div class="card-body py-4 px-5">
+                            <div class="text-center mb-4">
+                                <div class="rounded-circle bg-success/10 w-16 h-16 d-flex align-items-center justify-content-center mx-auto mb-3">
+                                    <i class="bi bi-clipboard-check text-success fs-2"></i>
+                                </div>
+                                <p class="text-muted mb-1">活动链接已复制到剪贴板</p>
+                                <p class="text-sm text-gray-500">您可以粘贴到任意平台分享</p>
+                            </div>
+                            <button class="btn btn-primary w-100 py-2" id="confirmShareBtn">
+                                完成
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(shareModal);
+                document.body.style.overflow = 'hidden';
+
+                // 关闭弹窗事件
+                const closeBtn = shareModal.querySelector('#closeShareModal');
+                const confirmBtn = shareModal.querySelector('#confirmShareBtn');
+                
+                function closeModal() {
+                    shareModal.remove();
+                    document.body.style.overflow = '';
+                }
+
+                closeBtn.addEventListener('click', closeModal);
+                confirmBtn.addEventListener('click', closeModal);
+                shareModal.addEventListener('click', function(e) {
+                    if (e.target === shareModal) closeModal();
+                });
+
+            }).catch(err => {
+                alert(`分享失败！请手动复制以下链接：\n${url}`);
+                console.error('复制链接失败：', err);
+            });
+        }
+    </script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

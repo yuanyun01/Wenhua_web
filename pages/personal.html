@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>个人中心 - 城市文化平台</title>
+   <!-- Bootstrap 5 CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <!-- 图标库 -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <style>
+        /* 重置样式（补全缺失的 * 选择器） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 移除原个人中心按钮样式（取消.btn-user-center相关设置） */
+        
+        /* 个人中心功能导航样式（原弹窗内容改为页面内显示） */
+        .personal-nav {
+            max-width: 1000px;
+            margin: 0 auto 30px;
+            padding: 20px 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            /* 新增：增大顶部间距，与简介隔离 */
+            margin-top: 30px;
+        }
+        .personal-nav .modal-header {
+            padding: 10px 0;
+            background: transparent;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .personal-nav .modal-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .personal-nav .modal-menu li {
+            padding: 8px 15px;
+            border-bottom: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .personal-nav .modal-menu li:hover {
+            background: #f0f0f0;
+        }
+        /* 弹窗选项链接样式（去除下划线，继承颜色） */
+        .personal-nav .modal-menu li a {
+            text-decoration: none;
+            color: inherit;
+            display: block; /* 让整个li区域可点击 */
+        }
+        /* 个人中心欢迎页样式（当前页面内容，头像圆形同步账号信息） */
+        .personal-welcome {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .personal-welcome h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .personal-welcome p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        /* 头像样式：与account.html保持一致，圆形显示 */
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* 圆形头像，同步账号信息页面 */
+            object-fit: cover;
+            border: 3px solid #f0f0f0;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
+        }
+        /* 新增：简介样式，适配页面布局 */
+        .user-intro {
+            margin: 20px auto 0;
+            padding: 15px 20px;
+            max-width: 600px;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+   </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="culture.html">文化资源</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">活动中心</a></li>
+                    <li class="nav-item"><a class="nav-link" href="forum.html">互动交流</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 个人中心当前页面内容 -->
+    <div class="personal-welcome">
+        <h2>欢迎进入个人中心</h2>
+        <!-- 圆形头像：与account.html样式一致，初始链接同步固定种子链接 -->
+        <img src="https://picsum.photos/seed/useravatar/120/120" alt="用户头像" class="avatar-preview" id="avatarPreview">
+        
+        <!-- 新增：用户简介展示区域 -->
+        <div class="user-intro" id="userIntro">
+            用户不知道怎么介绍自己~
+        </div>
+        
+        <!-- 个人中心功能导航（已下移隔离） -->
+        <div class="personal-nav">
+            <div class="modal-header">个人中心功能</div>
+            <ul class="modal-menu">
+                <!-- 页面内导航链接，跳转至独立页面 -->
+                <li><a href="account.html"><i class="bi bi-person me-1"></i>账号信息</a></li>
+                <li><a href="order.html"><i class="bi bi-ticket-detailed me-1"></i>我的订单</a></li>
+                <!-- 新增：收藏功能 -->
+                <li><a href="collection.html"><i class="bi bi-star me-1"></i>我的收藏</a></li>
+            </ul>
+        </div> 
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. 同步配置：与account.html保持一致的默认头像、默认简介和本地存储key
+        const DEFAULT_AVATAR = 'https://picsum.photos/seed/useravatar/120/120';
+        const DEFAULT_INTRO = '用户不知道怎么介绍自己~';
+        const avatarPreview = document.getElementById('avatarPreview');
+        const userIntro = document.getElementById('userIntro');
+
+        // 2. 页面加载时，同步头像和简介（与account.html共用同一本地存储）
+        window.onload = function() {
+            // 同步头像：优先获取account.html保存的本地存储头像
+            const savedAvatar = localStorage.getItem('userAvatar');
+            avatarPreview.src = savedAvatar || DEFAULT_AVATAR;
+            
+            // 同步简介：优先获取account.html保存的本地存储简介，无则显示默认值
+            const savedIntro = localStorage.getItem('userIntro');
+            userIntro.textContent = savedIntro || DEFAULT_INTRO;
+        };
+
+        // 3. 监听本地存储变化（实时同步account.html中未刷新页面的头像、简介修改）
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userAvatar') {
+                // 实时更新头像
+                avatarPreview.src = e.newValue || DEFAULT_AVATAR;
+            } else if (e.key === 'userIntro') {
+                // 实时更新简介
+                userIntro.textContent = e.newValue || DEFAULT_INTRO;
+            }
+        });
+    </script>
+</body>
+</html>

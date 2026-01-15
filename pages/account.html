@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>账号信息 - 城市文化平台</title>
+   <!-- 公共资源引入 -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <style>
+        .account-section {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .account-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .btn-back-personal {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-back-personal:hover {
+            background: #5a6268;
+            color: #fff;
+        }
+        .avatar-area {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        .avatar-desc {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .avatar-tips {
+            font-size: 14px;
+            color: #666;
+        }
+        .btn-edit-info {
+            background: #0d6efd;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-edit-info:hover {
+            background: #0b5ed7;
+        }
+        .btn-logout {
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-logout:hover {
+            background: #bb2d3b;
+        }
+        .account-info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .account-info-table tr {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .account-info-table td {
+            padding: 18px 12px;
+        }
+        .account-info-table td:first-child {
+            width: 150px;
+            font-weight: 500;
+            color: #333;
+            vertical-align: top;
+            padding-top: 22px;
+        }
+        .account-info-value {
+            font-size: 16px;
+            color: #666;
+        }
+        .form-control-custom {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            display: none;
+        }
+        /* 多行文本框样式适配 */
+        .textarea-custom {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            display: none;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-control-custom:focus, .textarea-custom:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        .avatar-upload-area {
+            display: none;
+            margin-top: 10px;
+        }
+        .btn-upload {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-upload:hover {
+            background: #218838;
+        }
+        #avatarFile {
+            display: none;
+        }
+        .form-op-btns {
+            margin-top: 30px;
+            padding-left: 150px;
+            display: none;
+        }
+        .btn-save-custom {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .btn-save-custom:hover {
+            background: #218838;
+        }
+        .btn-cancel-custom {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-cancel-custom:hover {
+            background: #5a6268;
+        }
+   </style>
+</head>
+<body>
+    <!-- 公共导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="culture.html">文化资源</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">活动中心</a></li>
+                    <li class="nav-item"><a class="nav-link" href="forum.html">互动交流</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 账号信息区域 -->
+    <div class="account-section" id="accountSection">
+        <div class="account-header">
+            <h2 class="account-title">个人账号信息</h2>
+            <button class="btn-back-personal" id="backPersonalBtn">
+                <i class="bi bi-arrow-left"></i>返回个人中心
+            </button>
+        </div>
+        <div class="avatar-area">
+            <!-- 初始头像固定：使用具体的、非随机的图片链接，避免每次加载变化 -->
+            <img src="https://picsum.photos/seed/useravatar/120/120" alt="用户头像" class="avatar-preview" id="avatarPreview">
+            <div class="avatar-desc">
+                <p class="avatar-tips">点击下方按钮可编辑资料</p>
+                <button class="btn-edit-info" id="editInfoBtn">编辑个人资料</button>
+                <button class="btn-logout" id="logoutBtn">退出登录</button>
+                <div class="avatar-upload-area" id="avatarUploadArea">
+                    <button class="btn-upload" id="uploadBtn">更换头像</button>
+                    <input type="file" id="avatarFile" accept="image/jpg,image/png">
+                    <p class="avatar-tips mt-2" style="margin: 5px 0 0 0;">支持JPG、PNG格式，大小不超过2M</p>
+                </div>
+            </div>
+        </div>
+        <table class="account-info-table">
+            <tr>
+                <td>用户名</td>
+                <td>
+                    <span class="account-info-value" id="usernameShow">test</span>
+                    <!-- 隐藏用户名输入框，不可修改 -->
+                    <input type="text" class="form-control-custom" id="usernameInput" style="display: none;" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>手机号</td>
+                <td>
+                    <span class="account-info-value" id="phoneShow">请输入手机号</span>
+                    <input type="tel" class="form-control-custom" id="phoneInput" placeholder="请输入手机号（可选）" value="">
+                </td>
+            </tr>
+            <tr>
+                <td>邮箱</td>
+                <td>
+                    <span class="account-info-value" id="emailShow">请输入邮箱</span>
+                    <input type="email" class="form-control-custom" id="emailInput" placeholder="请输入邮箱（可选）" value="">
+                </td>
+            </tr>
+            <!-- 新增简介字段 -->
+            <tr>
+                <td>简介</td>
+                <td>
+                    <span class="account-info-value" id="introShow">用户不知道怎么介绍自己~</span>
+                    <textarea class="textarea-custom" id="introInput" placeholder="请输入个人简介（可选）"></textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="form-op-btns" id="formOpBtns">
+            <button class="btn-save-custom" id="saveBtn">保存修改</button>
+            <button class="btn-cancel-custom" id="cancelBtn">取消编辑</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 全局DOM元素获取
+        const avatarPreview = document.getElementById('avatarPreview');
+        const editInfoBtn = document.getElementById('editInfoBtn');
+        const avatarUploadArea = document.getElementById('avatarUploadArea');
+        const formOpBtns = document.getElementById('formOpBtns');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const avatarFile = document.getElementById('avatarFile');
+        const backPersonalBtn = document.getElementById('backPersonalBtn');
+        const usernameShow = document.getElementById('usernameShow');
+        const introShow = document.getElementById('introShow');
+        const introInput = document.getElementById('introInput');
+
+        // 1. 初始化数据：新增持久化头像存储（使用localStorage），区分临时预览和永久保存
+        // 固定初始头像链接（与HTML中保持一致）
+        const DEFAULT_AVATAR = 'https://picsum.photos/seed/useravatar/120/120';
+        const DEFAULT_INTRO = '用户不知道怎么介绍自己~';
+        // 从localStorage获取登录用户名，无则默认"游客"
+        const loginUsername = localStorage.getItem('username') || '游客';
+        // 优先从localStorage读取已保存的简介，无则使用默认值
+        const savedIntro = localStorage.getItem('userIntro') || DEFAULT_INTRO;
+        const originalData = {
+            username: loginUsername, // 关联登录账号
+            phone: '', // 清空默认值，初始展示占位符
+            email: '', // 清空默认值，初始展示占位符
+            intro: savedIntro, // 初始化时同步本地存储的简介
+            // 优先从本地存储获取已保存的头像，无则使用默认头像
+            avatar: localStorage.getItem('userAvatar') || DEFAULT_AVATAR
+        };
+
+        // 2. 页面加载时，渲染持久化数据和登录用户名
+        window.onload = function() {
+            // 渲染不可修改的登录用户名
+            usernameShow.textContent = originalData.username;
+            // 渲染初始头像
+            avatarPreview.src = originalData.avatar;
+            // 渲染持久化的简介（关键：同步本地存储数据）
+            introShow.textContent = originalData.intro;
+            // 初始化简介输入框默认值（同步本地存储数据）
+            introInput.value = originalData.intro;
+        };
+
+        // 3. 新增临时头像存储（用于编辑时预览，未保存不持久化）
+        let tempAvatar = originalData.avatar;
+
+        // 返回个人中心逻辑
+        backPersonalBtn.addEventListener('click', function() {
+            window.location.href = 'personal.html';
+        });
+
+        // 编辑个人资料逻辑
+        editInfoBtn.addEventListener('click', function() {
+            avatarUploadArea.style.display = 'block';
+            editInfoBtn.textContent = '正在编辑...';
+            editInfoBtn.disabled = true;
+            
+            // 编辑时，重置临时头像为当前永久头像（避免残留上一次未保存的预览）
+            tempAvatar = originalData.avatar;
+            
+            // 显示输入框，隐藏展示文本（排除用户名，用户名不可编辑）
+            document.querySelectorAll('.account-info-value:not(#usernameShow)').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.form-control-custom').forEach(el => {
+                if (el.id !== 'usernameInput') el.style.display = 'block';
+            });
+            // 显示简介多行文本框
+            introInput.style.display = 'block';
+            formOpBtns.style.display = 'block';
+        });
+
+        // 4. 头像上传逻辑：仅更新临时头像（预览用），未保存不写入本地存储
+        uploadBtn.addEventListener('click', function() {
+            avatarFile.click();
+        });
+
+        avatarFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // 仅更新临时头像和页面预览，不修改永久数据和本地存储
+                    tempAvatar = event.target.result;
+                    avatarPreview.src = tempAvatar;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 5. 保存修改逻辑：优化校验（手机号/邮箱非必填，有输入才验证格式），同步简介数据，持久化到本地存储
+        saveBtn.addEventListener('click', function() {
+            const newPhone = document.getElementById('phoneInput').value.trim();
+            const newEmail = document.getElementById('emailInput').value.trim();
+            const newIntro = introInput.value.trim() || DEFAULT_INTRO; // 简介为空则恢复默认值
+            
+            // 手机号严格校验：有输入时才验证（11位数字，第一位为1）
+            const phoneReg = /^1[0-9]{10}$/;
+            if (newPhone && !phoneReg.test(newPhone)) {
+                alert('请输入有效的11位手机号！');
+                return;
+            }
+            
+            // 邮箱格式校验：有输入时才验证
+            const emailReg = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (newEmail && !emailReg.test(newEmail)) {
+                alert('请输入有效的邮箱格式！');
+                return;
+            }
+            
+            // 更新账号数据（关键：主动更新页面展示的简介）
+            document.getElementById('phoneShow').textContent = newPhone || '请输入手机号';
+            document.getElementById('emailShow').textContent = newEmail || '请输入邮箱';
+            introShow.textContent = newIntro; // 保存后直接更新查看状态的简介文本
+            originalData.phone = newPhone;
+            originalData.email = newEmail;
+            originalData.intro = newIntro; // 同步简介数据到原始数据对象
+            
+            // 持久化保存：简介和头像存入localStorage（确保跨页面、刷新后不丢失）
+            localStorage.setItem('userIntro', newIntro);
+            localStorage.setItem('userAvatar', tempAvatar);
+            
+            // 恢复只读状态
+            cancelEdit();
+            alert('修改成功！');
+        });
+
+        // 6. 取消编辑逻辑：放弃临时修改，恢复为原始数据（已同步本地存储）
+        cancelBtn.addEventListener('click', function() {
+            // 恢复手机号、邮箱信息
+            document.getElementById('phoneShow').textContent = originalData.phone || '请输入手机号';
+            document.getElementById('phoneInput').value = originalData.phone;
+            document.getElementById('emailShow').textContent = originalData.email || '请输入邮箱';
+            document.getElementById('emailInput').value = originalData.email;
+            // 恢复简介信息（同步原始数据，即本地存储的最新数据）
+            introShow.textContent = originalData.intro;
+            introInput.value = originalData.intro;
+            
+            // 恢复永久头像
+            avatarPreview.src = originalData.avatar;
+            tempAvatar = originalData.avatar;
+            
+            cancelEdit();
+        });
+
+        // 退出登录逻辑（修改后）
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('isLogin');
+                localStorage.removeItem('username'); // 清除保存的用户名
+                // 提示并跳转首页
+                alert('退出登录成功！');
+                window.location.href = 'index.html';
+            }
+        });
+
+        // 取消编辑函数
+        function cancelEdit() {
+            avatarUploadArea.style.display = 'none';
+            editInfoBtn.textContent = '编辑个人资料';
+            editInfoBtn.disabled = false;
+            
+            // 隐藏输入框，显示展示文本（排除用户名）
+            document.querySelectorAll('.account-info-value:not(#usernameShow)').forEach(el => {
+                // 手机号/邮箱为空时，显示占位符文本
+                if (el.id === 'phoneShow' && !originalData.phone) {
+                    el.textContent = '请输入手机号';
+                }
+                if (el.id === 'emailShow' && !originalData.email) {
+                    el.textContent = '请输入邮箱';
+                }
+                el.style.display = 'inline';
+            });
+            document.querySelectorAll('.form-control-custom').forEach(el => {
+                if (el.id !== 'usernameInput') el.style.display = 'none';
+            });
+            // 隐藏简介多行文本框
+            introInput.style.display = 'none';
+            formOpBtns.style.display = 'none';
+        }
+    </script>
+	<script src="../js/main.js"></script>
+</body>
+</html>

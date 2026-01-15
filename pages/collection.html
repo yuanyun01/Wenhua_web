@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 城市文化产业宣传与促进平台</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- 自定义样式 -->
+    <style>
+        .collection-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .collection-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .empty-collection {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+        .btn-back-personal {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-back-personal:hover {
+            background: #5a6268;
+            color: #fff;
+            text-decoration: none;
+        }
+        /* 页面头部弹性布局，实现标题与按钮同一水平 */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-building-columns me-2"></i>城市文化平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="culture.html">文化资源</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">文化活动</a></li>
+                    <li class="nav-item"><a class="nav-link" href="forum.html">互动交流</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statistics.html">数据统计</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部（核心修改：弹性布局实现同水平对齐） -->
+    <header class="py-3 bg-light border-bottom">
+        <div class="container">
+            <div class="header-container">
+                <h4 class="mb-0"><i class="bi bi-star-fill text-warning me-2"></i>我的活动收藏</h4>
+                <button class="btn-back-personal" id="backPersonalBtn">
+                    <i class="bi bi-arrow-left"></i>返回个人中心
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 收藏内容区域 -->
+    <section class="py-5">
+        <div class="container">
+            <!-- 已收藏活动列表 -->
+            <div class="row g-4" id="collectionList">
+                <!-- 动态渲染收藏活动 -->
+            </div>
+
+            <!-- 空收藏提示 -->
+            <div class="empty-collection d-none" id="emptyCollection">
+                <i class="bi bi-star fs-1 mb-3"></i>
+                <h5>暂无收藏的活动</h5>
+                <p class="mb-4">去文化活动页面收藏你感兴趣的活动吧</p>
+                <a href="events.html" class="btn btn-primary">
+                    <i class="bi bi-arrow-right me-2"></i>浏览活动
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-building-columns me-2"></i>城市文化产业宣传与促进平台</h5>
+                    <p>致力于推广城市文化，促进文化产业发展</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>© 2026 城市文化平台 版权所有</p>
+                    <p>隐私政策 | 服务条款</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. 绑定返回个人中心按钮事件（提前绑定，确保可用）
+        const backPersonalBtn = document.getElementById('backPersonalBtn');
+        backPersonalBtn.addEventListener('click', function() {
+            window.location.href = 'personal.html';
+        });
+
+        // 2. 全局数据兼容（与活动详情页保持一致）
+        if (!window.eventDataList) {
+            window.eventDataList = [
+                {
+                    id: 1,
+                    title: '非遗精品展 - 匠心传承',
+                    type: 'exhibition',
+                    cover: 'image/非遗精品展.png',
+                    time: '2026-02-10 至 2026-03-10',
+                    location: '市博物馆 1号展厅',
+                    quota: '500',
+                    deadline: '2026-02-09 18:00',
+                    tags: ['热门', '展览', '免费'],
+                    content: `<p>本次非遗精品展汇集了本市近百位非遗传承人的代表作品，涵盖剪纸、木雕、刺绣、陶艺等多个品类，展示了传统工艺的精湛技艺和文化内涵。</p>`,
+                    related: [2, 4]
+                },
+                {
+                    id: 2,
+                    title: '经典戏曲《牡丹亭》演出',
+                    type: 'performance',
+                    cover: 'image/牡丹亭.png',
+                    time: '2026-02-15 19:30',
+                    location: '市大剧院 歌剧厅',
+                    quota: '800',
+                    deadline: '2026-02-14 24:00',
+                    tags: ['售票中', '演出', '戏曲'],
+                    content: `<p>经典昆曲《牡丹亭》将在市大剧院上演，由国家一级演员领衔主演，全本演绎这段跨越生死的爱情故事。</p>`,
+                    related: [1, 3]
+                },
+                {
+                    id: 3,
+                    title: '非遗剪纸手作体验课',
+                    type: 'experience',
+                    cover: 'image/非遗剪纸.png',
+                    time: '2026-02-20 14:00',
+                    location: '市文化馆 3楼体验室',
+                    quota: '30',
+                    deadline: '2026-02-19 18:00',
+                    tags: ['预约中', '体验课', '非遗'],
+                    content: `<p>本次剪纸体验课邀请省级非遗传承人王老师授课，从零开始教大家制作传统剪纸作品。</p>`,
+                    related: [1, 4]
+                },
+                {
+                    id: 4,
+                    title: '城市文化发展高峰论坛',
+                    type: 'lecture',
+                    cover: 'image/城市文化发展高峰论坛.png',
+                    time: '2026-01-25 09:00',
+                    location: '国际会议中心',
+                    quota: '200',
+                    deadline: '2026-01-24 18:00',
+                    tags: ['即将开始', '讲座', '付费'],
+                    content: `<p>本次高峰论坛邀请知名文化学者、行业专家和政府相关部门负责人，共同探讨城市文化产业发展的机遇与挑战。</p>`,
+                    related: [1, 2]
+                },
+				{
+					id: 5,
+					title: "新春民俗灯会",
+					type: "exhibition",
+					cover: "image/灯会.png",
+					time: "2026-01-20 至 2026-02-05",
+					location: "市文化广场",
+					quota: "1000",
+					deadline: "2026-01-19 18:00",
+					tags: ["热门", "展览", "免费"],
+					content: `<p>新春民俗灯会汇集了上千盏传统花灯，涵盖生肖、民俗故事等主题，夜晚点亮后美轮美奂。</p>`,
+					related: [1, 4]
+				},
+				{
+					id: 6,
+					title: "亲子陶艺体验课",
+					type: "experience",
+					cover: "image/陶艺.png",
+					time: "2026-01-25 14:00-16:00",
+					location: "市手工艺体验馆 2楼陶艺室",
+					quota: "30",
+					deadline: "2026-01-24 18:00",
+					tags: ["预约中", "体验课", "亲子"],
+					content: `<p>亲子陶艺体验课由专业陶艺师授课，适合5-12岁儿童与家长共同参与。</p>`,
+					related: [3, 5]
+				},
+				{
+					id: 7,
+					title: "新年音乐会",
+					type: "performance",
+					cover: "image/音乐会.png",
+					time: "2026-01-30 19:30",
+					location: "市音乐厅 主厅",
+					quota: "1200",
+					deadline: "2026-01-29 24:00",
+					tags: ["售票中", "演出", "音乐"],
+					content: `<p>新年音乐会由市交响乐团演奏，曲目涵盖经典交响乐、新年主题乐曲，还有流行音乐改编作品。</p>`,
+					related: [2, 5]
+				}
+            ];
+        }
+        const eventDataList = window.eventDataList;
+
+        // 3. 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 验证用户登录状态
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                if (confirm('请先登录才能查看我的收藏，是否跳转至登录页面？')) {
+                    window.location.href = 'login.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+                return;
+            }
+
+            // 渲染收藏列表
+            renderCollectionList();
+        });
+
+        // 4. 退出登录函数（保留，供个人中心页面复用）
+        function logout() {
+            localStorage.removeItem('isLogin');
+            localStorage.removeItem('username');
+            alert('退出登录成功！');
+            window.location.href = 'index.html';
+        }
+
+        // 5. 获取用户收藏的活动ID列表（从localStorage读取，持久化存储）
+        function getCollectedEventIds() {
+            const collectedStr = localStorage.getItem('collectedEvents') || '[]';
+            try {
+                return JSON.parse(collectedStr);
+            } catch (e) {
+                localStorage.setItem('collectedEvents', '[]');
+                return [];
+            }
+        }
+
+        // 6. 渲染收藏活动列表
+        function renderCollectionList() {
+            const collectionList = document.getElementById('collectionList');
+            const emptyCollection = document.getElementById('emptyCollection');
+            const collectedIds = getCollectedEventIds();
+
+            // 清空列表
+            collectionList.innerHTML = '';
+
+            // 判断是否有收藏活动
+            if (collectedIds.length === 0) {
+                collectionList.classList.add('d-none');
+                emptyCollection.classList.remove('d-none');
+                return;
+            }
+
+            // 显示收藏列表，隐藏空提示
+            collectionList.classList.remove('d-none');
+            emptyCollection.classList.add('d-none');
+
+            // 筛选已收藏的活动数据
+            const collectedEvents = eventDataList.filter(event => collectedIds.includes(event.id));
+
+            // 渲染每个收藏活动卡片
+            collectedEvents.forEach(event => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-lg-3';
+                col.innerHTML = `
+                    <div class="card shadow-sm h-100 collection-card" data-event-id="${event.id}">
+                        <img src="${event.cover}" class="card-img-top" alt="${event.title}">
+                        <div class="card-body">
+                            <h6 class="card-title mb-3">${event.title}</h6>
+                            <p class="card-text text-muted small mb-2">
+                                <i class="bi bi-calendar me-1"></i>${event.time}
+                            </p>
+                            <p class="card-text text-muted small mb-4">
+                                <i class="bi bi-geo-alt me-1"></i>${event.location}
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a href="event_detail.html?id=${event.id}" class="btn btn-sm btn-outline-primary flex-grow-1">
+                                    <i class="bi bi-eye me-1"></i>查看详情
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger" data-event-id="${event.id}" id="cancelCollectBtn-${event.id}">
+                                    <i class="bi bi-trash me-1"></i>取消
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                collectionList.appendChild(col);
+
+                // 绑定取消收藏按钮事件
+                const cancelBtn = document.getElementById(`cancelCollectBtn-${event.id}`);
+                cancelBtn.addEventListener('click', function() {
+                    cancelCollection(event.id);
+                });
+            });
+        }
+
+        // 7. 取消收藏功能
+        function cancelCollection(eventId) {
+            const collectedIds = getCollectedEventIds();
+            // 过滤掉要取消的活动ID
+            const newCollectedIds = collectedIds.filter(id => id !== eventId);
+            // 保存更新后的收藏列表到localStorage
+            localStorage.setItem('collectedEvents', JSON.stringify(newCollectedIds));
+            // 重新渲染列表
+            renderCollectionList();
+            // 提示用户
+            alert('已取消该活动收藏！');
+
+            // 同步更新活动详情页的收藏状态（可选，通过storage事件联动）
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'collectedEvents',
+                newValue: JSON.stringify(newCollectedIds)
+            }));
+        }
+    </script>
+    <script>
+        // 补充：监听storage变化，实时更新列表
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'collectedEvents') {
+                renderCollectionList();
+            }
+        });
+    </script>
+</body>
+</html>
